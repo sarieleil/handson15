@@ -1,0 +1,28 @@
+def bellman_ford(graph, vertices, source):
+    dist = {v: float('inf') for v in vertices}
+    dist[source] = 0
+
+    for _ in range(len(vertices) - 1):
+        for u, v, w in graph:
+            if dist[u] + w < dist[v]:
+                dist[v] = dist[u] + w
+
+    # Check for negative-weight cycles
+    for u, v, w in graph:
+        if dist[u] + w < dist[v]:
+            raise ValueError("Graph contains a negative-weight cycle")
+
+    return dist
+
+# Example from CLRS Figure 24.4
+graph_bf = [
+    ('s', 't', 6), ('s', 'y', 7),
+    ('t', 'x', 5), ('t', 'y', 8), ('t', 'z', -4),
+    ('y', 'x', -3), ('y', 'z', 9),
+    ('x', 't', -2),
+    ('z', 'x', 7), ('z', 's', 2)
+]
+vertices_bf = ['s', 't', 'x', 'y', 'z']
+
+print("\nBellman-Ford result from source 's':")
+print(bellman_ford(graph_bf, vertices_bf, 's'))

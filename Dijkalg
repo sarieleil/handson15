@@ -1,0 +1,33 @@
+import heapq
+from collections import defaultdict
+
+def dijkstra(graph, source):
+    dist = {v: float('inf') for v in graph}
+    dist[source] = 0
+    visited = set()
+    heap = [(0, source)]
+
+    while heap:
+        d, u = heapq.heappop(heap)
+        if u in visited:
+            continue
+        visited.add(u)
+
+        for v, weight in graph[u]:
+            if dist[u] + weight < dist[v]:
+                dist[v] = dist[u] + weight
+                heapq.heappush(heap, (dist[v], v))
+
+    return dist
+
+# Example graph (CLRS Figure 24.6)
+graph_dijkstra = {
+    's': [('t', 10), ('y', 5)],
+    't': [('x', 1), ('y', 2)],
+    'y': [('t', 3), ('x', 9), ('z', 2)],
+    'x': [('z', 4)],
+    'z': [('x', 6), ('s', 7)]
+}
+
+print("Dijkstra's result from source 's':")
+print(dijkstra(graph_dijkstra, 's'))

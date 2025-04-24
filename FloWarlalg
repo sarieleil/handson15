@@ -1,0 +1,25 @@
+def floyd_warshall(vertices, adj_matrix):
+    dist = [row[:] for row in adj_matrix]
+    n = len(vertices)
+
+    for k in range(n):
+        for i in range(n):
+            for j in range(n):
+                if dist[i][k] + dist[k][j] < dist[i][j]:
+                    dist[i][j] = dist[i][k] + dist[k][j]
+    return dist
+
+# Example from CLRS Figure 25.2
+INF = float('inf')
+vertices_fw = ['1', '2', '3', '4']
+adj_matrix_fw = [
+    [0,   3,   8,   INF],
+    [INF, 0,   INF, 1],
+    [INF, 4,   0,   INF],
+    [2,   INF, -5,  0]
+]
+
+print("\nFloyd-Warshall all-pairs shortest paths matrix:")
+result_fw = floyd_warshall(vertices_fw, adj_matrix_fw)
+for row in result_fw:
+    print(row)
